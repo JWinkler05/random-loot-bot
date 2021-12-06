@@ -126,39 +126,6 @@ client.on('message', msg => {
             } else {
                 invest(msg, action, player, i1, i2);
             }
-         } else if (action == "spook") {
-            if(msg.author.username != "Sakusami" || msg.author.discriminator != "8922") {
-                console.log("NO PERMISSION");
-                msg.channel.send("You do not have sufficient permissions to complete this action.");
-            } else {
-                uName = msg.author.username + "#" + msg.author.discriminator;
-                spookInfo = wantedRole = spookList["users"][uName];
-
-                let userList = getUsers();
-
-                // guildObj.members.fetch().then(members => {
-                //         let username = `${members.user.username}#${members.user.discriminator}`;
-                //         let uid = `${members.user.id}`;
-                //         let name = `${members.user.username}`;
-                //         console.log({
-                //             "name": name,
-                //             "uid": uid,
-                //             "un": username
-                //         });
-                // });
-
-                // msg.guild.members.forEach(r => {
-                //     let username = `${r.user.username}#${r.user.discriminator}`;
-                //     console.log(username);
-                // })
-                // .catch(console.error);
-
-                if( msg.member.roles.cache.has(roleList[spookInfo["level"]])) {
-                    //msg.channel.send("Has role");
-                } else {
-                    //msg.channel.send("Does Not Have Role");
-                }
-            }
          } else if (action == "dig") {
              let channel_id = "839569637758730290";
              let msg_channel_id = msg.channel.id;
@@ -248,12 +215,12 @@ function randInvest(place) {
     rNum = between(1, 6);
     console.log("RAND: " + rNum);
     invest_modifier = {
-        "tb":  2,
-        "bm":  1,
-        "bee": 2,
+        "tb":  0,
+        "bm":  0,
+        "bee": 0,
         "zoo": 0,
-        "rc":  -1,
-        "ts":  1
+        "rc":  0,
+        "ts":  0
     };
 
     if(place in invest_modifier) {
