@@ -9,12 +9,10 @@ const GUILD_ID = '689958775125442675';
 
 var jsonLoot = require('./lists/item_list.json');
 var bizList = require('./lists/biz.json');
-var spookList = require('./lists/spook.json');
-var roleList = require('./lists/roles.json');
 
-var digLimit = 0;
-var digs = 0;
-var autoWin = 0;
+// var digLimit = 0;
+// var digs = 0;
+// var autoWin = 0;
 
 client.on('ready', () => {
     console.log(`Logged in as ${client.user.tag}!`);
@@ -38,9 +36,9 @@ client.on('message', msg => {
             // !ping
             case 'test':
                 break;
-            case 'dig':
-                action = 'dig';
-                break;
+            // case 'dig':
+            //     action = 'dig';
+            //     break;
             case 'random-bp':
                 action = "bp";
                 break;
@@ -61,6 +59,9 @@ client.on('message', msg => {
                 break;
             case 'random-produce':
                 action = "produce";
+                break;
+            case 'random-aug':
+                action = "augment";
                 break;
             case 'grcb':
                 action = "herb"
@@ -86,9 +87,6 @@ client.on('message', msg => {
             case 'dual-invest':
                 action = "invest2";
                 break;
-            case 'test-s':
-                action = "spook";
-                break
             case 'lb-help':
                 msg.reply("Pleaes use the following commands:\n" +
                             "!random-bp playerName: Random Blueprint.\n" +
@@ -112,7 +110,7 @@ client.on('message', msg => {
             // Just add any case commands if you want to..
          }
 
-         randomList = ["bp", "herb", "scrap", "armor", "brews", "shield", "produce", "grcp", "grcm", "grcpfa"];
+         randomList = ["bp", "herb", "scrap", "armor", "brews", "shield", "produce", "grcp", "grcm", "grcpfa", "augment"];
          bizList = ["list", "abbr", "invest", "invest2"];
          if (randomList.indexOf(action) > -1 ) {
              itemReply(msg, action, player);
@@ -126,30 +124,31 @@ client.on('message', msg => {
             } else {
                 invest(msg, action, player, i1, i2);
             }
-         } else if (action == "dig") {
-             let channel_id = "839569637758730290";
-             let msg_channel_id = msg.channel.id;
-             if(channel_id == msg_channel_id) {
-                console.log(`${msg}`);
-                if(digLimit < 0) {
-                    msg.author.send("You dig for a while but don't seem to find anything. Is it the right time?");
-                    msg.author.send("Also, I cannot see any replys to this bot. Please message TC(Sakusami#8922) with any questions or feel free to open a ticket on the server.");
-                } else if (digs < digLimit) {
-                    console.log(`Player ${msg.author.username}#${msg.author.discriminator} has completed the dig.`)
-                    msg.reply("You begin to dig where you think the note has directed you. After some time you hear a loud thunk and remove a large metal box from the ground.");
-                    msg.author.send("Inside the box you find: (2x Hard Metal, 2x Soft Metal, 2x Alloy Metal, 3x Rare Scrap, 1x Lager(5), 1x IPA(10)");
-                    msg.author.send("Please use the Mod loot form to track this. Also, rememebr to share with those who helped you get to this point <3");
-                    msg.author.send("Also, I cannot see any replys to this bot. Please message TC(Sakusami#8922) with any questions or feel free to open a ticket on the server.");
-                    digs+=1;
-                } else {
-                    msg.author.send("You notice that the area has been dug recently. After a small amount of time you conclude there is nothing of value left here.");
-                    msg.author.send("Also, I cannot see any replys to this bot. Please message TC(Sakusami#8922) with any questions or feel free to open a ticket on the server.");
-                }
-                msg.delete();
-             } else {
-                console.log("Incorrect digging channel");
-             }
         }
+        //  } else if (action == "dig") {
+        //      let channel_id = "839569637758730290";
+        //      let msg_channel_id = msg.channel.id;
+        //      if(channel_id == msg_channel_id) {
+        //         console.log(`${msg}`);
+        //         if(digLimit < 0) {
+        //             msg.author.send("You dig for a while but don't seem to find anything. Is it the right time?");
+        //             msg.author.send("Also, I cannot see any replys to this bot. Please message TC(Sakusami#8922) with any questions or feel free to open a ticket on the server.");
+        //         } else if (digs < digLimit) {
+        //             console.log(`Player ${msg.author.username}#${msg.author.discriminator} has completed the dig.`)
+        //             msg.reply("You begin to dig where you think the note has directed you. After some time you hear a loud thunk and remove a large metal box from the ground.");
+        //             msg.author.send("Inside the box you find: (2x Hard Metal, 2x Soft Metal, 2x Alloy Metal, 3x Rare Scrap, 1x Lager(5), 1x IPA(10)");
+        //             msg.author.send("Please use the Mod loot form to track this. Also, rememebr to share with those who helped you get to this point <3");
+        //             msg.author.send("Also, I cannot see any replys to this bot. Please message TC(Sakusami#8922) with any questions or feel free to open a ticket on the server.");
+        //             digs+=1;
+        //         } else {
+        //             msg.author.send("You notice that the area has been dug recently. After a small amount of time you conclude there is nothing of value left here.");
+        //             msg.author.send("Also, I cannot see any replys to this bot. Please message TC(Sakusami#8922) with any questions or feel free to open a ticket on the server.");
+        //         }
+        //         msg.delete();
+        //      } else {
+        //         console.log("Incorrect digging channel");
+        //      }
+        // }
      }
 });
 
@@ -249,6 +248,8 @@ function randInvest(place) {
 }
 
 function invest(msg, type, player, i1, i2) {
+    msg.delete();
+
     business1 = typeof(i1) != "undefined" ? i1 : "";
     business2 = typeof(i2) != "undefined" ? i2 : "";
 
@@ -297,34 +298,4 @@ function bizAbbr(msg) {
       }
 
       msg.channel.send(items.slice(0, -2));
-}
-
-function setSpooky() {
-
-}
-
-function getUsers(){
-    let guildObj = client.guilds.cache.get(GUILD_ID);
-
-    var userList = {};
-    var count = 0;
-
-    guildObj.members.fetch().then(members => {
-        for(var member of members) {
-            let user = member[1].user;
-            if(!(user.bot)) {
-                let username = `${user.username}#${user.discriminator}`;
-                let uid = `${user.id}`;
-                let nickname = `${user.nickname}`;
-                userList[uid] = {
-                    "name": nickname,
-                    "un": username
-                }
-                count += 1;
-            }
-        }
-        return userList
-    }).catch(console.error);
-
-
 }
